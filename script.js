@@ -84,4 +84,4 @@ fetchBtn.addEventListener('click', () => {
 });
 
 // Default load
-fetchWeather('Delhi');
+fetchWeather('Mumbai');
