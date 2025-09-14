@@ -12,10 +12,10 @@ async function fetchWeather(city) {
         const currentUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=metric&appid=${API_KEY}`;
         console.log('Fetching current:', currentUrl);
         const currentResponse = await fetch(currentUrl);
-        console.log('Current status:', currentResponse.status); // Debug: Should be 200
+        console.log('Current status:', currentResponse.status); // Should be 200
         if (!currentResponse.ok) {
             const errorText = await currentResponse.text();
-            throw new Error(`HTTP ${currentResponse.status}: ${errorText}`);
+            throw new Error(`Current weather HTTP ${currentResponse.status}: ${errorText}`);
         }
         const currentData = await currentResponse.json();
         console.log('Current data:', currentData);
@@ -23,16 +23,16 @@ async function fetchWeather(city) {
         // Fetch 5-day forecast
         const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}&units=metric&appid=${API_KEY}`;
         console.log('Fetching forecast:', forecastUrl);
-        const forecastResponse = await fetch(forecastUrl); // Fixed: Added fetch()
-        console.log('Forecast status:', forecastResponse.status); // Debug: Should be 200
+        const forecastResponse = await fetch(forecastUrl); // Correct fetch call
+        console.log('Forecast status:', forecastResponse.status); // Should be 200
         if (!forecastResponse.ok) {
             const errorText = await forecastResponse.text();
-            throw new Error(`HTTP ${forecastResponse.status}: ${errorText}`);
+            throw new Error(`Forecast HTTP ${forecastResponse.status}: ${errorText}`);
         }
         const forecastData = await forecastResponse.json();
         console.log('Forecast data:', forecastData);
 
-        // Outfit suggestion based on temp and weather
+        // Outfit suggestion
         const temp = currentData.main.temp;
         const condition = currentData.weather[0].main.toLowerCase();
         let outfit = 'Wear comfortable clothes.';
@@ -40,7 +40,7 @@ async function fetchWeather(city) {
         else if (temp < 20) outfit = 'A light jacket should do.';
         if (condition.includes('rain')) outfit += ' Bring an umbrella!';
 
-        // Current weather
+        // Render current weather and forecast
         const iconUrl = `https://openweathermap.org/img/wn/${currentData.weather[0].icon}@2x.png`;
         weatherInfoDiv.innerHTML = `
             <div class="current-weather">
@@ -81,4 +81,4 @@ fetchBtn.addEventListener('click', () => {
 });
 
 // Default load
-fetchWeather('Delhi');
+fetchWeather('Mumbai');
