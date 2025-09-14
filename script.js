@@ -2,7 +2,7 @@ const cityInput = document.getElementById('city');
 const fetchBtn = document.getElementById('fetch-btn');
 const weatherInfoDiv = document.getElementById('weather-info');
 
-const API_KEY = 'eca4361e2b6feccaa8f07c9881560a58'; // Replace with your actual key
+const API_KEY = 'eca4361e2b6feccaa8f07c9881560a58'; // Replace with your actual key (e.g., 'abc123def456')
 
 async function fetchWeather(city) {
     try {
@@ -12,6 +12,7 @@ async function fetchWeather(city) {
         const currentUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=metric&appid=${API_KEY}`;
         console.log('Fetching current:', currentUrl);
         const currentResponse = await fetch(currentUrl);
+        console.log('Current status:', currentResponse.status); // Debug: Should be 200
         if (!currentResponse.ok) {
             const errorText = await currentResponse.text();
             throw new Error(`HTTP ${currentResponse.status}: ${errorText}`);
@@ -22,7 +23,8 @@ async function fetchWeather(city) {
         // Fetch 5-day forecast
         const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}&units=metric&appid=${API_KEY}`;
         console.log('Fetching forecast:', forecastUrl);
-        const forecastResponse = await forecastUrl;
+        const forecastResponse = await fetch(forecastUrl); // Fixed: Added fetch()
+        console.log('Forecast status:', forecastResponse.status); // Debug: Should be 200
         if (!forecastResponse.ok) {
             const errorText = await forecastResponse.text();
             throw new Error(`HTTP ${forecastResponse.status}: ${errorText}`);
@@ -79,4 +81,4 @@ fetchBtn.addEventListener('click', () => {
 });
 
 // Default load
-fetchWeather('London');
+fetchWeather('Delhi');
